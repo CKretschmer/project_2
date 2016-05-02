@@ -5,7 +5,7 @@ module Sinatra
     set :method_override, true
 
     def db
-      if ENV["RACK_ENV"] == "prodution"
+      if ENV["RACK_ENV"] == "production"
         @db ||= PG.connect(
           dbname: ENV["POSTGRES_DB"],
           host: ENV["POSTGRES_HOST"],
