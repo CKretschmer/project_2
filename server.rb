@@ -4,16 +4,19 @@ module Sinatra
   class Server < Sinatra::Base
     set :method_override, true
 
-    if ENV["RACK_ENV"] == "prodution"
-      db = PG.connect(
-        dbname: ENV["POSTGRES_DB"],
-        host: ENV["POSTGRES_HOST"],
-        password: ENV["POSTGRES_PASS"],
-        user: ENV["POSTGRES_USER"]
-      )
-    else
-      db = PG.connect(dbname: "Favartist")
+    def db
+      if ENV["RACK_ENV"] == "prodution"
+        @db ||= PG.connect(
+          dbname: ENV["POSTGRES_DB"],
+          host: ENV["POSTGRES_HOST"],
+          password: ENV["POSTGRES_PASS"],
+          user: ENV["POSTGRES_USER"]
+        )
+      else
+        PG.connect(dbname: "Favartist")
+      end
     end
+
     get "/" do
       erb :index
     end
@@ -25,7 +28,7 @@ module Sinatra
 
     post '/users' do
       @text = params[:text]
-    db.exec_params("INSERT INTO comments (text) VALUES $1", [@text])
+      db.exec_params("INSERT INTO comments (text) VALUES $1", [@text])
     end
 
 
