@@ -1,7 +1,7 @@
 require 'pg'
 
 def conn
-  if ENV["RACK_ENV"] == "prodution"
+  if ENV["RACK_ENV"] == "production"
     @db ||= PG.connect(
       dbname: ENV["POSTGRES_DB"],
       host: ENV["POSTGRES_HOST"],
