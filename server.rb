@@ -1,5 +1,5 @@
+require 'sinatra'
 require 'pg'
-require 'pry'
 module Sinatra
   class Server < Sinatra::Base
     set :method_override, true
