@@ -1,4 +1,4 @@
-µrequire 'pg'
+require 'pg'
 
 if ENV["RACK_ENV"] == "production"
     conn = PG.connect(
@@ -11,9 +11,9 @@ else
     conn = PG.connect(dbname: "portfolio")
 end
 
-conn.exec("DROP TABLE IF EXISTS contact_data")
+conn.exec("DROP TABLE IF EXISTS Users")  <---# Do this for each table
 
-conn.exec("CREATE TABLE contact_data(
+conn.exec("CREATE TABLE ______(
     id SERIAL PRIMARY KEY,
     name VARCHAR(255),
     email VARCHAR(255),
