@@ -3,8 +3,17 @@ require 'pg'
 module Sinatra
   class Server < Sinatra::Base
     set :method_override, true
-    db = PG.connect(dbname: ENV["POSTGRES_DB"]) #variable that connects to postgres db for you
 
+    if ENV["RACK_ENV"] == "prodution"
+      db = PG.connect(
+        dbname: ENV["POSTGRES_DB"],
+        host: ENV["POSTGRES_HOST"],
+        password: ENV["POSTGRES_PASS"],
+        user: ENV["POSTGRES_USER"]
+      )
+    else
+      db = PG.connect(dbname: "Favartist")
+    end
     get "/" do
       erb :index
     end

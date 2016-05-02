@@ -1,5 +1,5 @@
 require 'pg'
-if ENV["RACK_ENV"] == "Favartist"
+if ENV["RACK_ENV"] == "prodution"
     conn = PG.connect(
         dbname: ENV["POSTGRES_DB"],
         host: ENV["POSTGRES_HOST"],
