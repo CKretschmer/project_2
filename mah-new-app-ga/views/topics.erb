@@ -1,5 +1,12 @@
 <% @topics.each do |topic| %>
   <h2><%= topic['title'] %> <%= topic['text'] %></h2>
+
+<form action='/topics' method='POST'>
+  <input type='hidden' name='_method' value="DELETE">
+  <input type='hidden' name='topic_id' value="<%= topic['id'] %>">
+    <button>DELETE</button>
+  </form>
+
 <% end %>
 <% if @submitted %>
 <p class="topic-created">Thanks for your post!</p>
@@ -9,16 +16,15 @@
   <form class="" action="/topics" method="post">
     <div class="input-row">
   <label for="title">Title: </label>
-  <input type="text" post="title" />
+  <input type="text" name="title" />
+
     </div>
     <div class="input-row">
   <label for="text">Text: </label>
-  <input type="text" post="text" />
-  <div class="input-row">
-      <input type="submit" value="Send"/>
+  <input type="text" name="text" />
+      <input type="Submit" value="Send"/>
     </div>
   </form>
 </div>
 
-</div>
 <% end %>

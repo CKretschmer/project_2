@@ -2,6 +2,7 @@ require 'pg'
 require 'pry'
 module Sinatra
   class Server < Sinatra::Base
+    set :method_override, true
 
      db = PG.connect(dbname: "Favartist") #variable that connects to postgres db for you
     get "/" do
@@ -13,9 +14,10 @@ module Sinatra
       erb :Users
     end
 
-    # post '/users' do
-    #   @users =
-    # end
+    post '/users' do
+      @text = params[:text]
+    db.exec_params("INSERT INTO comments (text) VALUES $1", [@text])
+    end
 
 
 
@@ -26,7 +28,7 @@ module Sinatra
 
     # get "/login" do
     #   if conn.exec(SELECT * FROM users)
-    #   erb :top8
+    # => erb :logout
     # else
     #   erb :login
     # end
@@ -72,38 +74,31 @@ module Sinatra
     end
 
     get '/topics/:id' do
-      id = params['id']
+      id = params[:id]
       @topics = db.exec_params("SELECT * FROM topics WHERE user_id = $1",[id])
       erb :topics
     end
 
     post '/topics' do
-      @title = params['title']
-      @text = params['text']
-
+      @title = params[:title]
+      @text = params[:text]
       db.exec_params("INSERT INTO topics (title, text) VALUES ($1, $2)", [@title, @text])
-      Pry.start(binding)
-    redirect to('/mainpage')
+      # Pry.start(binding)
+    redirect to('/topics')
     "Topic created!"
-  end
+    end
 
     delete '/topics' do
         id = params['topic_id'].to_i
         db.exec_params("DELETE FROM topics WHERE id = $1",[id])
         redirect to ('/topics')
-  end
+    end
 
-    # put '/topics' do
-    #   id = params['topic_id'].to_i
-    #   title = params['title']
-    #   text = params['text']
-    # end
-
-
-    # get '/mainpage' do
-
-
-
+    put '/topics' do
+      id = params[:topic_id].to_i
+      title = params[:title]
+      text = params[:text]
+    end
 
     get '/comments' do
       @comments = db.exec("SELECT * FROM comments;")
@@ -111,19 +106,25 @@ module Sinatra
     end
 
     get '/comments/:text' do
-    text = params['text']
+    @text = params[:text]
+
     @comments = db.exec_params("SELECT * FROM comments WHERE user_id = $1",[text])
     erb :comments
     end
 
     post '/comments' do
-      @comments = params['comments']
-      @user_id = params['user_id']
-      @topic_id = params['topic_id']
-      @timestamp = params['timestamp']
-
-      db.exec_params("INSERT INTO comments (comments, user_id, topic_id, timestamp) VALUES ($1, $2, $3, $4)", [@comments, @user_id, @topic_id, @timestamp])
+      @comments = params[:comments]
+      @user_id = params[:user_id]
+      @topic_id = params[:topic_id]
+      @date = params[:date]
+      db.exec_params("INSERT INTO comments (comments, user_id, topic_id, date) VALUES ($1, $2, $3, $4)", [@comments, @user_id, @topic_id, @tdate])
       "Well done!"
+
+     # delete '/comments' do
+     #    id = params['user_id'].to_i
+     #    db.exec_params("DELETE FROM comments WHERE user_id = $1",[id])
+     #    redirect to ('/topics')
+
     end
 
 end
