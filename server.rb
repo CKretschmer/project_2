@@ -4,6 +4,7 @@ module Sinatra
   class Server < Sinatra::Base
     set :method_override, true
     db = PG.connect(dbname: ENV["POSTGRES_DB"]) #variable that connects to postgres db for you
+
     get "/" do
       erb :index
     end
