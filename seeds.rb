@@ -1,4 +1,3 @@
-require 'pg'
 
 if ENV["RACK_ENV"] == "Favartist"
     conn = PG.connect(
